@@ -1,3 +1,5 @@
+using ShopAPI.Models.Common;
+
 namespace ShopAPI.Models
 {
     public class Category : BaseEnity
