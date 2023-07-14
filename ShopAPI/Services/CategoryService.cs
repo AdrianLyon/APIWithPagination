@@ -67,6 +67,7 @@ namespace ShopAPI.Services
         public async Task<Category> PostAsync(CategoryCreateDto category)
         {
             var newEntity = new Category();
+            if (newEntity.Description == category.Description) throw new Exception("Category already exists");
             newEntity.Description = category.Description;
             newEntity.Created = DateTime.Now;
             newEntity.isDeleted = false;

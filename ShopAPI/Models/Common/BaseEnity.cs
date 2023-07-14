@@ -1,4 +1,4 @@
-namespace ShopAPI.Models
+namespace ShopAPI.Models.Common
 {
     public class BaseEnity
     {

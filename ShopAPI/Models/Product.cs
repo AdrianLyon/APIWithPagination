@@ -1,3 +1,6 @@
+using ShopAPI.Models;
+using ShopAPI.Models.Common;
+
 namespace ShopAPI.Models
 {
     public class Product : BaseEnity

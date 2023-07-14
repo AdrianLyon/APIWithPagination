@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopAPI.DTOs;
+using ShopAPI.Models.Common;
 using ShopAPI.Services;
 
 namespace ShopAPI.Controllers
@@ -15,11 +16,12 @@ namespace ShopAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int page = 1, int pageSize = 10)
         {
             var model = await _categoryService.GetAllAsync();
-            if (model.Any()) return NotFound();
-            return Ok(model);
+            if (model == null) return NotFound();
+            var paginations = PaginationHelper.PaginateData(model, page, pageSize);
+            return Ok(paginations);
         }
 
         [HttpGet("{id}")]
@@ -50,8 +52,6 @@ namespace ShopAPI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var model = await _categoryService.DeleteAsync(id);
-            if (model == null) return NotFound();
-
             if (!ModelState.IsValid) return BadRequest();
             return NoContent();
         }

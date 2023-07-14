@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopAPI.DTOs;
+using ShopAPI.Models.Common;
 using ShopAPI.Services;
 
 namespace ShopAPI.Controllers
@@ -15,11 +16,12 @@ namespace ShopAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int page = 1, int pageSize = 10)
         {
             var response = await _productService.GetAllAsync();
             if (response.Any()) NotFound();
-            return Ok(response);
+            var paginations = PaginationHelper.PaginateData(response, page, pageSize);
+            return Ok(paginations);
         }
 
         [HttpGet("{id}")]
