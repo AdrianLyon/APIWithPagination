@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ShopAPI.DTOs;
 using ShopAPI.Models.Common;
@@ -6,6 +7,7 @@ using ShopAPI.Services;
 namespace ShopAPI.Controllers
 {
     [ApiController]
+    [EnableCors]
     [Route("api/categories")]
     public class CategoriesController : ControllerBase
     {
@@ -16,15 +18,16 @@ namespace ShopAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int page = 1, int pageSize = 10)
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
+        public async Task<IActionResult> Get(int page = 1, int pageSize = 10, string searchQuery = "")
         {
-            var model = await _categoryService.GetAllAsync();
+            var model = await _categoryService.GetAllAsync(page, pageSize,searchQuery);
             if (model == null) return NotFound();
-            var paginations = PaginationHelper.PaginateData(model, page, pageSize);
-            return Ok(paginations);
+            return Ok(model);
         }
 
         [HttpGet("{id}")]
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
         public async Task<IActionResult> Get(int id)
         {
             var model = await _categoryService.GetByIdAsync(id);

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ShopAPI.DTOs;
 using ShopAPI.Models.Common;
@@ -6,6 +7,7 @@ using ShopAPI.Services;
 namespace ShopAPI.Controllers
 {
     [ApiController]
+    [EnableCors]
     [Route("api/products")]
     public class ProductsController : ControllerBase
     {
@@ -16,6 +18,7 @@ namespace ShopAPI.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
         public async Task<IActionResult> Get(int page = 1, int pageSize = 10)
         {
             var response = await _productService.GetAllAsync();
@@ -25,6 +28,7 @@ namespace ShopAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
         public async Task<IActionResult> Get(int id)
         {
             var response = await _productService.GetByIdAsync(id);
