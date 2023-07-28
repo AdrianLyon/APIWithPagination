@@ -17,6 +17,12 @@ builder.Services.AddDbContext<ApplicationdbContext>(options =>
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+builder.Services.AddCors(options => options.AddPolicy(name: "NgOrigins",
+    policy =>
+    {
+        policy.WithOrigins().AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+    }));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +35,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("NgOrigins");
 
 app.MapControllers();
 
